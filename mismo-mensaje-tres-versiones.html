@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El mismo mensaje, tres versiones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF8F2; --card:#FEFCF8; --ink:#28241F; --ink-soft:#6E655A;
+    --line:#EAE1D3; --line-strong:#DBCFBC; --accent:#4A3F6B; --accent-soft:#EDE9F2;
+    --p1:#C68A3A; --p1-bg:#F6EEDD;   /* mayor */
+    --p2:#3E7CA6; --p2-bg:#E4EEF3;   /* joven, otra cultura */
+    --p3:#A45478; --p3-bg:#F4E8EE;   /* internacional */
+    --shadow:0 1px 2px rgba(40,36,31,.04), 0 10px 34px rgba(40,36,31,.07);
+    --r:18px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0; min-height:100vh;
+    background:radial-gradient(1100px 560px at 88% -12%, #F3EDE1 0%, transparent 58%), var(--paper);
+    color:var(--ink); font-family:'Instrument Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:820px; margin:0 auto; padding:clamp(20px,4vw,44px) clamp(16px,4vw,32px) 72px;}
+
+  .eyebrow{font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:600; margin:0 0 12px; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:26px; height:1.5px; background:var(--accent); opacity:.55;}
+  h1{font-family:'Fraunces',Georgia,serif; font-weight:500; font-size:clamp(2rem,5.2vw,3.05rem); line-height:1.04; letter-spacing:-.015em; margin:0 0 16px;}
+  h1 em{font-style:italic;}
+  .lede{color:var(--ink-soft); font-size:clamp(1rem,1.6vw,1.1rem); max-width:60ch; margin:0 0 8px;}
+  .lede strong{color:var(--ink); font-weight:600;}
+
+  .principle{display:flex; gap:14px; align-items:flex-start; background:var(--accent); color:#fff; border-radius:var(--r); padding:18px 22px; margin:24px 0 8px; box-shadow:var(--shadow);}
+  .principle .lite{font-size:1.6rem; line-height:1.2;}
+  .principle p{margin:0; font-size:.96rem;}
+  .principle p b{font-weight:600;}
+  .principle .top{font-family:'Fraunces',Georgia,serif; font-size:1.15rem; font-weight:500; margin:0 0 4px;}
+
+  .section-head{margin:42px 0 6px;}
+  .section-num{font-family:'Fraunces',Georgia,serif; color:var(--accent); font-weight:600; font-size:1rem;}
+  .section-head h2{font-family:'Fraunces',Georgia,serif; font-weight:500; font-size:clamp(1.5rem,3.6vw,2rem); letter-spacing:-.01em; margin:2px 0 6px;}
+  .section-head p{color:var(--ink-soft); margin:0 0 4px; max-width:64ch; font-size:.96rem;}
+
+  /* mensaje base */
+  .scenario{background:var(--accent-soft); border-radius:14px; padding:15px 18px; margin:14px 0 16px; font-size:.95rem;}
+  .scenario b{color:var(--accent);}
+  .msg{background:var(--card); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); padding:22px clamp(18px,3vw,26px);}
+  .msg.base{border-left:5px solid var(--line-strong);}
+  .msg .qt{font-family:'Fraunces',Georgia,serif; font-size:1.08rem; line-height:1.55; margin:0; color:var(--ink); white-space:pre-line;}
+  .msg .verdict{margin:16px 0 0; padding-top:14px; border-top:1px dashed var(--line-strong); font-size:.9rem; color:var(--ink-soft);}
+  .msg .verdict b{color:var(--rojo,#BB5340);}
+
+  /* tabs de perfil */
+  .tabs{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin:16px 0 0;}
+  .tab{font-family:'Instrument Sans',sans-serif; text-align:left; padding:14px 15px; border-radius:14px; border:1.5px solid var(--line-strong); background:#fff; cursor:pointer; transition:all .15s; color:var(--ink);}
+  .tab .n{display:block; font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; color:var(--ink-soft); margin-bottom:3px;}
+  .tab .l{font-weight:600; font-size:.96rem; line-height:1.2;}
+  .tab:hover{transform:translateY(-1px);}
+  .tab[data-p="p1"].active{border-color:var(--p1); background:var(--p1-bg);} .tab[data-p="p1"].active .n{color:var(--p1);}
+  .tab[data-p="p2"].active{border-color:var(--p2); background:var(--p2-bg);} .tab[data-p="p2"].active .n{color:var(--p2);}
+  .tab[data-p="p3"].active{border-color:var(--p3); background:var(--p3-bg);} .tab[data-p="p3"].active .n{color:var(--p3);}
+
+  /* panel de perfil */
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); padding:clamp(20px,3.5vw,30px); margin-top:14px; border-top:5px solid var(--pc);}
+  .panel.p1{--pc:var(--p1); --pcbg:var(--p1-bg);}
+  .panel.p2{--pc:var(--p2); --pcbg:var(--p2-bg);}
+  .panel.p3{--pc:var(--p3); --pcbg:var(--p3-bg);}
+  .panel .need{display:flex; gap:12px; align-items:flex-start; margin:0 0 20px;}
+  .panel .need .ic{font-size:1.5rem; line-height:1;}
+  .panel .need .txt{font-size:.95rem; color:var(--ink-soft);}
+  .panel .need .txt b{color:var(--ink);}
+
+  .adapted{background:var(--pcbg); border-radius:14px; padding:18px 20px; margin:0 0 8px;}
+  .adapted .qt{font-family:'Fraunces',Georgia,serif; font-size:1.08rem; line-height:1.55; margin:0; color:var(--ink); white-space:pre-line;}
+  .channel{display:inline-flex; align-items:center; gap:8px; margin-top:14px; font-size:.85rem; font-weight:600; color:var(--pc); background:#fff; border:1.5px solid var(--pc); border-radius:999px; padding:6px 14px;}
+
+  .whatchanged{margin-top:22px;}
+  .wc-title{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); font-weight:600; margin:0 0 4px;}
+  .wc-hint{font-size:.85rem; color:var(--ink-soft); margin:0 0 12px; font-style:italic;}
+  .dim{border:1px solid var(--line); border-radius:12px; margin-bottom:9px; overflow:hidden; background:#fff;}
+  .dim-btn{width:100%; text-align:left; background:none; border:none; padding:13px 15px; cursor:pointer; display:flex; align-items:center; gap:11px; font-family:'Instrument Sans',sans-serif; font-size:.98rem; font-weight:600; color:var(--ink);}
+  .dim-btn .ic{font-size:1.1rem;}
+  .dim-btn .chev{margin-left:auto; color:var(--ink-soft); transition:transform .2s; font-size:.8rem;}
+  .dim-btn:hover{background:#FBF8F2;}
+  .dim.open .dim-btn .chev{transform:rotate(180deg);}
+  .dim-body{display:none; padding:0 15px 15px; font-size:.94rem;}
+  .dim.open .dim-body{display:block; animation:fade .25s ease both;}
+  .dim-body .what{margin:0 0 8px;}
+  .dim-body .why{margin:0; color:var(--ink-soft);}
+  .dim-body .why b{color:var(--pc); font-weight:600;}
+  @keyframes fade{from{opacity:0} to{opacity:1}}
+
+  .reveal-all{margin-top:12px; font-family:'Instrument Sans',sans-serif; font-size:.88rem; font-weight:600; padding:9px 16px; border-radius:10px; border:1.5px solid var(--line-strong); background:transparent; color:var(--accent); cursor:pointer;}
+  .reveal-all:hover{background:var(--accent-soft); border-color:var(--accent);}
+
+  /* síntesis */
+  .matrix-wrap{overflow-x:auto; margin-top:8px;}
+  table.matrix{border-collapse:collapse; width:100%; min-width:560px; font-size:.9rem; background:var(--card); border-radius:var(--r); overflow:hidden; box-shadow:var(--shadow);}
+  table.matrix th, table.matrix td{padding:12px 14px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line);}
+  table.matrix thead th{background:#F4EEE2; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft);}
+  table.matrix tbody th{font-weight:600; white-space:nowrap; color:var(--ink); background:#FBF7F0;}
+  table.matrix tbody tr:last-child td, table.matrix tbody tr:last-child th{border-bottom:none;}
+  .col1{color:var(--p1);} .col2{color:var(--p2);} .col3{color:var(--p3);}
+
+  .checklist{background:var(--card); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); padding:24px clamp(18px,3vw,28px); margin-top:20px;}
+  .checklist h3{font-family:'Fraunces',Georgia,serif; font-weight:500; font-size:1.3rem; margin:0 0 4px;}
+  .checklist .sub{color:var(--ink-soft); font-size:.9rem; margin:0 0 18px;}
+  .checklist ul{list-style:none; padding:0; margin:0; display:grid; gap:12px;}
+  .checklist li{display:flex; gap:12px; align-items:flex-start;}
+  .checklist li .ic{flex:none; font-size:1.15rem; line-height:1.3;}
+  .checklist li b{font-weight:600;}
+  .checklist li span{font-size:.96rem;}
+
+  .reminders{display:grid; gap:12px; margin-top:20px;}
+  .reminder{border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0 12px 12px 0; padding:15px 18px;}
+  .reminder .k{font-family:'Fraunces',Georgia,serif; font-style:italic; font-size:1.05rem; font-weight:500; margin:0 0 3px; color:var(--ink);}
+  .reminder p{margin:0; font-size:.93rem; color:var(--ink-soft);}
+
+  .actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px;}
+  .btn{font-family:'Instrument Sans',sans-serif; font-size:1rem; font-weight:600; padding:13px 24px; border-radius:12px; border:1.5px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; transition:transform .1s, box-shadow .15s;}
+  .btn:hover{transform:translateY(-1px);}
+  .btn-ghost{background:transparent; color:var(--accent); box-shadow:none;}
+  .btn-ghost:hover{background:var(--accent-soft);}
+
+  footer.foot{margin-top:42px; padding-top:16px; border-top:1px solid var(--line); color:var(--ink-soft); font-size:.8rem;}
+
+  @media (max-width:560px){
+    .tabs{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important; transition-duration:.001ms !important;}}
+  @media print{
+    .tabs,.reveal-all,.actions,footer.foot,.dim-btn .chev{display:none !important;}
+    body{background:#fff;}
+    .dim-body{display:block !important;}
+    .panel{display:block !important;}
+    #matrix{display:block !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Herramienta · Comunicación sensible e intercultural</p>
+    <h1>El mismo mensaje,<br><em>tres versiones</em></h1>
+    <p class="lede">Un mensaje que sirve para todas suele no llegar a ninguna. Aquí verás cómo una misma noticia difícil —el cierre de una obra— se adapta a tres hermanas distintas, y detectarás <strong>qué cambia y por qué</strong> en cinco dimensiones.</p>
+    <div class="principle">
+      <span class="lite">✦</span>
+      <div>
+        <p class="top">Adaptar no es distorsionar.</p>
+        <p>El fondo —la verdad y la decisión— es <b>el mismo</b> en las tres versiones. Solo cambia la forma, para que llegue sin herir. Y adaptar es <b>conocer a la persona</b>, no suponer por su edad o su cultura.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. MENSAJE BASE -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">1</span>
+      <h2>El mensaje base</h2>
+    </div>
+    <div class="scenario"><b>La situación:</b> la congregación ha decidido que el próximo curso se cierra el colegio que la comunidad ha sostenido durante años. Las hermanas serán destinadas a otras comunidades. Hay que comunicarlo.</div>
+    <div class="msg base">
+      <p class="qt">Estimadas hermanas:
+
+Les informamos de que, tras la evaluación realizada, se ha decidido el cese de la actividad del centro a partir del próximo curso. Se procederá a la reubicación del personal según las necesidades. Rogamos confidencialidad hasta nueva comunicación.
+
+Un saludo.</p>
+      <p class="verdict"><b>No hiere a propósito, pero llega mal a las tres:</b> usa jerga («cese de actividad», «reubicación»), no explica el porqué, no deja espacio al golpe y da por hecho que todas leen el correo.</p>
+    </div>
+  </section>
+
+  <!-- 2. TRES VERSIONES -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">2</span>
+      <h2>Tres versiones</h2>
+      <p>Elige un perfil, lee su versión y, antes de revelar, fíjate: ¿qué ha cambiado respecto al mensaje base? Luego abre cada dimensión.</p>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-p="p1"><span class="n">Perfil 1</span><span class="l">Hermana mayor, poco acceso digital</span></button>
+      <button class="tab" data-p="p2"><span class="n">Perfil 2</span><span class="l">Hermana joven de otra cultura</span></button>
+      <button class="tab" data-p="p3"><span class="n">Perfil 3</span><span class="l">Comunidad internacional, varias lenguas</span></button>
+    </div>
+
+    <div id="panelHost"></div>
+  </section>
+
+  <!-- 3. SÍNTESIS -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">3</span>
+      <h2>La comparación</h2>
+      <p>Cuando hayáis explorado las tres, mirad el conjunto de un vistazo.</p>
+    </div>
+
+    <div class="actions" style="margin-top:8px;">
+      <button class="btn" id="matrixBtn">Mostrar la tabla comparativa</button>
+    </div>
+
+    <div id="matrix" style="display:none; margin-top:18px;">
+      <div class="matrix-wrap">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="col1">Mayor · poco digital</th>
+              <th class="col2">Joven · otra cultura</th>
+              <th class="col3">Comunidad internacional</th>
+            </tr>
+          </thead>
+          <tbody id="matrixBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="checklist">
+      <h3>Checklist: antes de comunicar algo sensible</h3>
+      <p class="sub">Recorre las cinco dimensiones pensando en la persona concreta que va a recibirlo.</p>
+      <ul id="checklist"></ul>
+    </div>
+
+    <div class="reminders">
+      <div class="reminder">
+        <p class="k">Adaptar no es distorsionar.</p>
+        <p>La decisión y la verdad son las mismas en las tres. Cambiar la forma para que se entienda no es mentir ni suavizar el fondo.</p>
+      </div>
+      <div class="reminder">
+        <p class="k">Adaptar es conocer, no suponer.</p>
+        <p>La clave no es la cultura o la edad «en general», sino esta hermana: su acceso, su lengua, su momento. Ante la duda, pregunta antes de decidir por ella.</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" onclick="window.print()">Imprimir / Guardar PDF</button>
+    </div>
+  </section>
+
+  <footer class="foot">El mismo mensaje, tres versiones · Herramienta de comunicación sensible e intercultural.</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var DIMS = [
+    {id:"lenguaje",    label:"Lenguaje",    ic:"💬"},
+    {id:"canal",       label:"Canal",       ic:"📮"},
+    {id:"ritmo",       label:"Ritmo",       ic:"⏳"},
+    {id:"ejemplos",    label:"Ejemplos",    ic:"🎯"},
+    {id:"explicacion", label:"Explicación", ic:"🧭"}
+  ];
+
+  var PROFILES = {
+    p1:{
+      cls:"p1", ic:"🕊️",
+      need:"Lleva décadas en la casa y tiene poco acceso digital. Necesita <b>presencia, calma y palabras sencillas</b> —y saber qué será de ella—.",
+      message:"Hermana, quería decírselo yo misma y en persona, antes que a nadie. Después de mucho rezarlo y pensarlo, el año que viene el colegio tendrá que cerrar: somos cada vez menos y ya no podemos sostenerlo como se merece.\n\nSé todo lo que este lugar significa para usted, después de tantos años entregados aquí. No la vamos a dejar sola: buscaremos juntas el mejor sitio para usted, con calma. Ahora no hace falta decidir nada; solo quería que lo supiera de mi boca. ¿Cómo se queda?",
+      channel:"En persona, a solas y sin prisa",
+      dims:{
+        lenguaje:{what:"Se quita toda la jerga («cese de actividad», «reubicación») y se dice en palabras sencillas y cálidas: «el colegio tendrá que cerrar».", why:"El lenguaje administrativo distancia y confunde; la cercanía sostiene."},
+        canal:{what:"En persona y a solas, no por correo ni chat.", why:"Su acceso digital es escaso, y una noticia así no se da por una pantalla: la presencia acompaña el golpe."},
+        ritmo:{what:"Se le dice a ella primero, sin prisa, dejando la logística para después.", why:"Necesita tiempo para asimilar antes de pasar a «qué toca hacer»."},
+        ejemplos:{what:"Se nombra lo que el lugar ha significado para ella y se aterriza en su futuro concreto («buscaremos juntas el mejor sitio»).", why:"Lo abstracto no consuela; lo personal y concreto, sí."},
+        explicacion:{what:"Se da el porqué en términos humanos («somos cada vez menos») y se asegura que no quedará sola.", why:"Sin el porqué, el vacío se llena de miedo."}
+      }
+    },
+    p2:{
+      cls:"p2", ic:"🌱",
+      need:"Llegó hace poco de otro país; el español no es su lengua materna. Necesita <b>claridad literal, contexto que no da por supuesto y comprobar que ha entendido</b> —y saber que un cambio no es un castigo—.",
+      message:"Quiero contarte algo importante y explicártelo con calma. El año que viene, el colegio va a cerrar. No es por nada que hayamos hecho mal: es porque cada vez somos menos hermanas y no podemos seguir llevándolo.\n\nEsto significa que iremos a otras comunidades. A ti te vamos a acompañar para encontrar un buen destino, y tu formación sigue igual. En la vida de la congregación esto pasa a veces; es un cambio, no un castigo.\n\nTe lo dejo también por escrito, para que lo puedas leer con tranquilidad. ¿Qué dudas tienes? ¿Quieres que te lo explique otra vez?",
+      channel:"Cara a cara y, después, por escrito para releer",
+      dims:{
+        lenguaje:{what:"Frases cortas y literales, sin modismos ni ironía; «te vamos a acompañar para encontrar un buen destino» en vez de «reubicación».", why:"Si el español no es su lengua, las frases hechas se pierden o se malinterpretan."},
+        canal:{what:"Cara a cara y, además, por escrito.", why:"Poder releer —y traducir— en su tiempo le da seguridad."},
+        ritmo:{what:"Se da la noticia con claridad y se abre espacio a preguntas, ofreciendo repetir.", why:"Comprobar que ha entendido importa más que la rapidez."},
+        ejemplos:{what:"Se aclara lo que cambia para ella en concreto (destino, formación) y que no es un castigo.", why:"En otra cultura, un cambio de destino puede leerse como sanción; hay que desactivar ese malentendido."},
+        explicacion:{what:"Se añade contexto que ella no da por supuesto: por qué se cierra, cómo funcionan los destinos, que es normal en la congregación.", why:"Lo que para otras es obvio, para ella puede ser desconocido."}
+      }
+    },
+    p3:{
+      cls:"p3", ic:"🌍",
+      need:"Conviven varias lenguas y grados de comprensión. Necesita un mensaje que funcione igual en todas: <b>simple, escrito, traducible y con espacio para preguntar</b>.",
+      message:"Queridas hermanas, quiero compartir con todas una noticia importante, y la he preparado por escrito para que cada una pueda leerla y, si lo necesita, traducirla.\n\nEl próximo curso, nuestro colegio va a cerrar. La razón es que somos cada vez menos y no podemos sostenerlo bien. Esto nos afecta a todas: iremos a otras comunidades, y lo haremos con cuidado y acompañamiento, sin prisa.\n\nHoy solo quiero que lo sepamos juntas. No hay que decidir nada ahora: tendremos tiempo para hablarlo, y quiero escuchar a cada una. Si algo no se entiende, por favor, preguntad —en vuestra lengua si es más fácil—.",
+      channel:"Reunión de comunidad, con el texto escrito y traducido",
+      dims:{
+        lenguaje:{what:"Lenguaje neutro, simple y traducible, sin expresiones locales.", why:"Tiene que funcionar igual de bien en varias lenguas."},
+        canal:{what:"Reunión en persona más el texto escrito y traducido a las lenguas presentes.", why:"La palabra hablada sola deja fuera a quien no domina el idioma; el texto iguala el acceso."},
+        ritmo:{what:"Estructurado y sin prisa: anunciar, dejar espacio para traducir y preguntar, sin decidir en el momento.", why:"La comprensión en un grupo multilingüe necesita pausas."},
+        ejemplos:{what:"Concretos y universales, evitando referencias de una sola cultura.", why:"Un ejemplo que solo unas entienden excluye al resto."},
+        explicacion:{what:"El porqué compartido para todas, con invitación explícita a preguntar en la propia lengua.", why:"Asegura que la misma información llega a todas por igual."}
+      }
+    }
+  };
+
+  var MATRIX = {
+    lenguaje:["Sencillo y cálido, sin jerga","Corto y literal, sin modismos","Neutro y traducible"],
+    canal:["En persona, a solas","Cara a cara + por escrito","Reunión + texto traducido"],
+    ritmo:["A ella primero, sin prisa","Con espacio para repetir","Pausado, para traducir"],
+    ejemplos:["Su vínculo y su futuro","«No es un castigo»","Universales, no de una cultura"],
+    explicacion:["El porqué humano","El contexto que no conoce","El porqué común a todas"]
+  };
+
+  var CHECKLIST = [
+    {ic:"💬", b:"Lenguaje:", t:"¿He quitado la jerga y las frases hechas? ¿Se entiende sin esfuerzo?"},
+    {ic:"📮", b:"Canal:", t:"¿Es el canal que esta persona puede y debe recibir? ¿La noticia merece presencia?"},
+    {ic:"⏳", b:"Ritmo:", t:"¿Doy tiempo a asimilar antes de pasar a la logística?"},
+    {ic:"🎯", b:"Ejemplos:", t:"¿Aterrizo lo abstracto en lo que significa para ella, en concreto?"},
+    {ic:"🧭", b:"Explicación:", t:"¿Doy el porqué? ¿Compruebo que se ha entendido?"}
+  ];
+
+  var panelHost = document.getElementById('panelHost');
+
+  function renderPanel(pid){
+    var P = PROFILES[pid];
+    var html = '<div class="panel '+P.cls+'">';
+    html += '<div class="need"><span class="ic">'+P.ic+'</span><span class="txt">'+P.need+'</span></div>';
+    html += '<div class="adapted"><p class="qt">'+escapeHtml(P.message)+'</p>'+
+            '<span class="channel">📍 '+P.channel+'</span></div>';
+    html += '<div class="whatchanged"><p class="wc-title">¿Qué cambió?</p>'+
+            '<p class="wc-hint">Adivina antes de abrir cada una.</p>';
+    DIMS.forEach(function(d){
+      var cell = P.dims[d.id];
+      html += '<div class="dim" data-d="'+d.id+'">'+
+                '<button class="dim-btn"><span class="ic">'+d.ic+'</span>'+d.label+'<span class="chev">▼</span></button>'+
+                '<div class="dim-body"><p class="what">'+cell.what+'</p>'+
+                '<p class="why"><b>Por qué:</b> '+cell.why+'</p></div>'+
+              '</div>';
+    });
+    html += '<button class="reveal-all">Revelar todo</button>';
+    html += '</div></div>';
+    panelHost.innerHTML = html;
+
+    // listeners
+    var dims = panelHost.querySelectorAll('.dim');
+    dims.forEach(function(dim){
+      dim.querySelector('.dim-btn').addEventListener('click', function(){
+        dim.classList.toggle('open');
+      });
+    });
+    var ra = panelHost.querySelector('.reveal-all');
+    ra.addEventListener('click', function(){
+      var allOpen = Array.prototype.every.call(dims, function(d){ return d.classList.contains('open'); });
+      dims.forEach(function(d){ d.classList.toggle('open', !allOpen); });
+      ra.textContent = allOpen ? "Revelar todo" : "Ocultar todo";
+    });
+  }
+
+  function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  // tabs
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      tabs.forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      renderPanel(t.getAttribute('data-p'));
+    });
+  });
+
+  // matrix
+  var matrixBody = document.getElementById('matrixBody');
+  DIMS.forEach(function(d){
+    var row = document.createElement('tr');
+    var cells = MATRIX[d.id];
+    row.innerHTML = '<th>'+d.ic+' '+d.label+'</th>'+
+      '<td>'+cells[0]+'</td><td>'+cells[1]+'</td><td>'+cells[2]+'</td>';
+    matrixBody.appendChild(row);
+  });
+  var matrixBtn = document.getElementById('matrixBtn');
+  var matrix = document.getElementById('matrix');
+  matrixBtn.addEventListener('click', function(){
+    var open = matrix.style.display !== 'none';
+    matrix.style.display = open ? 'none' : 'block';
+    matrixBtn.textContent = open ? 'Mostrar la tabla comparativa' : 'Ocultar la tabla comparativa';
+  });
+
+  // checklist
+  var cl = document.getElementById('checklist');
+  CHECKLIST.forEach(function(item){
+    var li = document.createElement('li');
+    li.innerHTML = '<span class="ic">'+item.ic+'</span><span><b>'+item.b+'</b> '+item.t+'</span>';
+    cl.appendChild(li);
+  });
+
+  renderPanel('p1');
+})();
+</script>
+</body>
+</html>
