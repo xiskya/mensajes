@@ -11,9 +11,11 @@
   :root{
     --paper:#FBF8F2; --card:#FEFCF8; --ink:#28241F; --ink-soft:#6E655A;
     --line:#EAE1D3; --line-strong:#DBCFBC; --accent:#4A3F6B; --accent-soft:#EDE9F2;
-    --p1:#C68A3A; --p1-bg:#F6EEDD;   /* mayor */
-    --p2:#3E7CA6; --p2-bg:#E4EEF3;   /* joven, otra cultura */
-    --p3:#A45478; --p3-bg:#F4E8EE;   /* internacional */
+    --p1:#C68A3A; --p1-bg:#F6EEDD;
+    --p2:#3E7CA6; --p2-bg:#E4EEF3;
+    --p3:#A45478; --p3-bg:#F4E8EE;
+    --ok:#4E9A6B; --ok-bg:#E7F1EA;
+    --no:#C0553F; --no-bg:#F6E5E0;
     --shadow:0 1px 2px rgba(40,36,31,.04), 0 10px 34px rgba(40,36,31,.07);
     --r:18px;
   }
@@ -35,7 +37,6 @@
   .principle{display:flex; gap:14px; align-items:flex-start; background:var(--accent); color:#fff; border-radius:var(--r); padding:18px 22px; margin:24px 0 8px; box-shadow:var(--shadow);}
   .principle .lite{font-size:1.6rem; line-height:1.2;}
   .principle p{margin:0; font-size:.96rem;}
-  .principle p b{font-weight:600;}
   .principle .top{font-family:'Fraunces',Georgia,serif; font-size:1.15rem; font-weight:500; margin:0 0 4px;}
 
   .section-head{margin:42px 0 6px;}
@@ -43,16 +44,38 @@
   .section-head h2{font-family:'Fraunces',Georgia,serif; font-weight:500; font-size:clamp(1.5rem,3.6vw,2rem); letter-spacing:-.01em; margin:2px 0 6px;}
   .section-head p{color:var(--ink-soft); margin:0 0 4px; max-width:64ch; font-size:.96rem;}
 
-  /* mensaje base */
   .scenario{background:var(--accent-soft); border-radius:14px; padding:15px 18px; margin:14px 0 16px; font-size:.95rem;}
   .scenario b{color:var(--accent);}
   .msg{background:var(--card); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); padding:22px clamp(18px,3vw,26px);}
   .msg.base{border-left:5px solid var(--line-strong);}
   .msg .qt{font-family:'Fraunces',Georgia,serif; font-size:1.08rem; line-height:1.55; margin:0; color:var(--ink); white-space:pre-line;}
   .msg .verdict{margin:16px 0 0; padding-top:14px; border-top:1px dashed var(--line-strong); font-size:.9rem; color:var(--ink-soft);}
-  .msg .verdict b{color:var(--rojo,#BB5340);}
+  .msg .verdict b{color:var(--no);}
 
-  /* tabs de perfil */
+  /* ---- QUIZ: ¿para quién es cada una? ---- */
+  .anon{background:var(--card); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); padding:20px clamp(18px,3vw,24px); margin-bottom:14px; border-left:5px solid var(--line-strong); transition:border-color .2s;}
+  .anon.right{border-left-color:var(--ok);}
+  .anon.wrong{border-left-color:var(--no);}
+  .anon .letter{font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:1.25rem; color:var(--accent); margin:0 0 10px;}
+  .anon .qt{font-family:'Fraunces',Georgia,serif; font-size:1.04rem; line-height:1.5; margin:0 0 16px; white-space:pre-line;}
+  .picks{display:grid; grid-template-columns:repeat(3,1fr); gap:8px;}
+  .pick{font-family:'Instrument Sans',sans-serif; font-size:.84rem; font-weight:600; text-align:left; padding:11px 12px; border-radius:11px; border:1.5px solid var(--line-strong); background:#fff; color:var(--ink-soft); cursor:pointer; line-height:1.2; transition:all .13s;}
+  .pick:hover{border-color:var(--accent); color:var(--ink);}
+  .pick.sel{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .picks.locked .pick{cursor:default;}
+  .picks.locked .pick:not(.sel){opacity:.4;}
+  .anon .fb{margin:14px 0 0; padding-top:12px; border-top:1px dashed var(--line-strong); font-size:.93rem; display:none;}
+  .anon .fb.show{display:block;}
+  .anon .fb .tag{display:inline-block; font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; padding:4px 11px; border-radius:999px; margin-bottom:7px;}
+  .anon .fb .tag.ok{background:var(--ok-bg); color:var(--ok);}
+  .anon .fb .tag.no{background:var(--no-bg); color:var(--no);}
+  .anon .fb p{margin:0; color:var(--ink);}
+  .anon .fb .clue{color:var(--ink-soft); font-size:.9rem; margin-top:6px;}
+
+  .checkrow{margin-top:6px;}
+  .hintline{color:var(--ink-soft); font-size:.9rem; font-style:italic; margin:0 0 14px;}
+
+  /* ---- tabs de perfil ---- */
   .tabs{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin:16px 0 0;}
   .tab{font-family:'Instrument Sans',sans-serif; text-align:left; padding:14px 15px; border-radius:14px; border:1.5px solid var(--line-strong); background:#fff; cursor:pointer; transition:all .15s; color:var(--ink);}
   .tab .n{display:block; font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; color:var(--ink-soft); margin-bottom:3px;}
@@ -62,7 +85,6 @@
   .tab[data-p="p2"].active{border-color:var(--p2); background:var(--p2-bg);} .tab[data-p="p2"].active .n{color:var(--p2);}
   .tab[data-p="p3"].active{border-color:var(--p3); background:var(--p3-bg);} .tab[data-p="p3"].active .n{color:var(--p3);}
 
-  /* panel de perfil */
   .panel{background:var(--card); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); padding:clamp(20px,3.5vw,30px); margin-top:14px; border-top:5px solid var(--pc);}
   .panel.p1{--pc:var(--p1); --pcbg:var(--p1-bg);}
   .panel.p2{--pc:var(--p2); --pcbg:var(--p2-bg);}
@@ -86,16 +108,15 @@
   .dim-btn:hover{background:#FBF8F2;}
   .dim.open .dim-btn .chev{transform:rotate(180deg);}
   .dim-body{display:none; padding:0 15px 15px; font-size:.94rem;}
-  .dim.open .dim-body{display:block; animation:fade .25s ease both;}
+  .dim.open .dim-body{display:block;}
   .dim-body .what{margin:0 0 8px;}
   .dim-body .why{margin:0; color:var(--ink-soft);}
   .dim-body .why b{color:var(--pc); font-weight:600;}
-  @keyframes fade{from{opacity:0} to{opacity:1}}
 
   .reveal-all{margin-top:12px; font-family:'Instrument Sans',sans-serif; font-size:.88rem; font-weight:600; padding:9px 16px; border-radius:10px; border:1.5px solid var(--line-strong); background:transparent; color:var(--accent); cursor:pointer;}
   .reveal-all:hover{background:var(--accent-soft); border-color:var(--accent);}
 
-  /* síntesis */
+  /* ---- matriz y checklist ---- */
   .matrix-wrap{overflow-x:auto; margin-top:8px;}
   table.matrix{border-collapse:collapse; width:100%; min-width:560px; font-size:.9rem; background:var(--card); border-radius:var(--r); overflow:hidden; box-shadow:var(--shadow);}
   table.matrix th, table.matrix td{padding:12px 14px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line);}
@@ -113,13 +134,29 @@
   .checklist li b{font-weight:600;}
   .checklist li span{font-size:.96rem;}
 
+  /* ---- práctica ---- */
+  .practice{background:var(--card); border:1px solid var(--line); border-top:5px solid var(--accent); border-radius:var(--r); box-shadow:var(--shadow); padding:clamp(22px,3.5vw,30px);}
+  .practice .pick-label{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); font-weight:600; margin:0 0 10px;}
+  .practice textarea{width:100%; font-family:'Instrument Sans',sans-serif; font-size:1rem; color:var(--ink); border:1.5px solid var(--line-strong); border-radius:12px; padding:14px 16px; background:#fff; min-height:150px; line-height:1.55; resize:vertical; margin-top:16px;}
+  .practice textarea:focus{outline:none; border-color:var(--accent);}
+  .guide{background:var(--accent-soft); border-radius:12px; padding:14px 17px; margin-top:16px; font-size:.9rem;}
+  .guide .k{font-size:10px; letter-spacing:.12em; text-transform:uppercase; font-weight:600; color:var(--accent); margin:0 0 7px;}
+  .guide ul{margin:0; padding-left:18px; display:grid; gap:4px; color:var(--ink);}
+  .modelbtn{margin-top:16px;}
+  .model{display:none; margin-top:20px; padding-top:18px; border-top:1px dashed var(--line-strong);}
+  .model.show{display:block;}
+  .model .k{font-size:11px; letter-spacing:.12em; text-transform:uppercase; font-weight:600; color:var(--accent); margin:0 0 8px;}
+  .model .mq{background:#F7F4EC; border-radius:12px; padding:16px 18px; font-family:'Fraunces',Georgia,serif; font-size:1.04rem; line-height:1.5; white-space:pre-line; margin:0 0 12px;}
+  .model .note{font-size:.9rem; color:var(--ink-soft); margin:0;}
+  .model .note b{color:var(--ink);}
+
   .reminders{display:grid; gap:12px; margin-top:20px;}
   .reminder{border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0 12px 12px 0; padding:15px 18px;}
   .reminder .k{font-family:'Fraunces',Georgia,serif; font-style:italic; font-size:1.05rem; font-weight:500; margin:0 0 3px; color:var(--ink);}
   .reminder p{margin:0; font-size:.93rem; color:var(--ink-soft);}
 
   .actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px;}
-  .btn{font-family:'Instrument Sans',sans-serif; font-size:1rem; font-weight:600; padding:13px 24px; border-radius:12px; border:1.5px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; transition:transform .1s, box-shadow .15s;}
+  .btn{font-family:'Instrument Sans',sans-serif; font-size:1rem; font-weight:600; padding:13px 24px; border-radius:12px; border:1.5px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; transition:transform .1s;}
   .btn:hover{transform:translateY(-1px);}
   .btn-ghost{background:transparent; color:var(--accent); box-shadow:none;}
   .btn-ghost:hover{background:var(--accent-soft);}
@@ -128,13 +165,14 @@
 
   @media (max-width:560px){
     .tabs{grid-template-columns:1fr;}
+    .picks{grid-template-columns:1fr;}
   }
-  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important; transition-duration:.001ms !important;}}
+  @media (prefers-reduced-motion:reduce){*{transition-duration:.001ms !important;}}
   @media print{
-    .tabs,.reveal-all,.actions,footer.foot,.dim-btn .chev{display:none !important;}
+    .picks,.reveal-all,.actions,footer.foot,.modelbtn,.dim-btn .chev{display:none !important;}
     body{background:#fff;}
     .dim-body{display:block !important;}
-    .panel{display:block !important;}
+    .model{display:block !important;}
     #matrix{display:block !important;}
   }
 </style>
@@ -145,7 +183,7 @@
   <header>
     <p class="eyebrow">Herramienta · Comunicación sensible e intercultural</p>
     <h1>El mismo mensaje,<br><em>tres versiones</em></h1>
-    <p class="lede">Un mensaje que sirve para todas suele no llegar a ninguna. Aquí verás cómo una misma noticia difícil —el cierre de una obra— se adapta a tres hermanas distintas, y detectarás <strong>qué cambia y por qué</strong> en cinco dimensiones.</p>
+    <p class="lede">Un mensaje que sirve para todas suele no llegar a ninguna. Aquí verás cómo una misma noticia difícil —el cierre de una obra— se adapta a tres hermanas distintas, y <strong>lo practicarás tú</strong>.</p>
     <div class="principle">
       <span class="lite">✦</span>
       <div>
@@ -172,12 +210,24 @@ Un saludo.</p>
     </div>
   </section>
 
-  <!-- 2. TRES VERSIONES -->
+  <!-- 2. ¿PARA QUIÉN ES CADA UNA? -->
   <section>
     <div class="section-head">
       <span class="section-num">2</span>
-      <h2>Tres versiones</h2>
-      <p>Elige un perfil, lee su versión y, antes de revelar, fíjate: ¿qué ha cambiado respecto al mensaje base? Luego abre cada dimensión.</p>
+      <h2>¿Para quién es cada una?</h2>
+      <p>Aquí están las tres versiones adaptadas, pero sin decir a quién van dirigidas. Léelas y decide. Las pistas están en el texto.</p>
+    </div>
+    <p class="hintline">Los tres perfiles: hermana mayor con poco acceso digital · hermana joven de otra cultura · comunidad internacional con varias lenguas.</p>
+    <div id="anonHost"></div>
+    <div class="checkrow"><button class="btn" id="checkBtn">Comprobar mis respuestas</button></div>
+  </section>
+
+  <!-- 3. QUÉ CAMBIÓ -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">3</span>
+      <h2>¿Qué cambió en cada una?</h2>
+      <p>Elige un perfil y abre cada dimensión. Antes de abrirla, intenta adivinar qué cambió.</p>
     </div>
 
     <div class="tabs" id="tabs">
@@ -189,12 +239,12 @@ Un saludo.</p>
     <div id="panelHost"></div>
   </section>
 
-  <!-- 3. SÍNTESIS -->
+  <!-- 4. COMPARACIÓN -->
   <section>
     <div class="section-head">
-      <span class="section-num">3</span>
+      <span class="section-num">4</span>
       <h2>La comparación</h2>
-      <p>Cuando hayáis explorado las tres, mirad el conjunto de un vistazo.</p>
+      <p>Las cinco dimensiones, de un vistazo.</p>
     </div>
 
     <div class="actions" style="margin-top:8px;">
@@ -222,6 +272,47 @@ Un saludo.</p>
       <p class="sub">Recorre las cinco dimensiones pensando en la persona concreta que va a recibirlo.</p>
       <ul id="checklist"></ul>
     </div>
+  </section>
+
+  <!-- 5. AHORA TE TOCA -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">5</span>
+      <h2>Ahora te toca</h2>
+      <p>Reconocer es fácil; escribir es lo que se aprende. Aquí tienes una situación nueva.</p>
+    </div>
+
+    <div class="scenario"><b>La situación:</b> una hermana muy querida, que lleva años en la comunidad, se marcha en dos semanas a otro destino. La decisión ha sido inesperada para todas. Te toca a ti comunicarlo.</div>
+
+    <div class="practice">
+      <p class="pick-label">¿A quién se lo vas a escribir?</p>
+      <div class="tabs" id="pTabs">
+        <button class="tab active" data-p="p1"><span class="n">Perfil 1</span><span class="l">Hermana mayor, poco acceso digital</span></button>
+        <button class="tab" data-p="p2"><span class="n">Perfil 2</span><span class="l">Hermana joven de otra cultura</span></button>
+        <button class="tab" data-p="p3"><span class="n">Perfil 3</span><span class="l">Comunidad internacional, varias lenguas</span></button>
+      </div>
+
+      <textarea id="myMsg" placeholder="Escribe aquí tu mensaje…"></textarea>
+
+      <div class="guide">
+        <p class="k">Guíate por las cinco dimensiones</p>
+        <ul>
+          <li><b>Lenguaje:</b> ¿palabras sencillas, sin jerga ni frases hechas?</li>
+          <li><b>Canal:</b> ¿en persona, por escrito, en reunión?</li>
+          <li><b>Ritmo:</b> ¿das espacio antes de pasar a lo práctico?</li>
+          <li><b>Ejemplos:</b> ¿aterrizas lo que significa para ella?</li>
+          <li><b>Explicación:</b> ¿das el porqué y compruebas que se entiende?</li>
+        </ul>
+      </div>
+
+      <div class="modelbtn"><button class="btn" id="modelBtn">Ver una versión modelo</button></div>
+
+      <div class="model" id="model">
+        <p class="k">Una versión posible <span id="modelFor"></span></p>
+        <div class="mq" id="modelText"></div>
+        <p class="note"><b>No es la respuesta correcta:</b> es una versión más para comparar. Mira qué decisiones tomó y cuáles tomaste tú; las diferencias son la conversación interesante.</p>
+      </div>
+    </div>
 
     <div class="reminders">
       <div class="reminder">
@@ -247,19 +338,20 @@ Un saludo.</p>
   "use strict";
 
   var DIMS = [
-    {id:"lenguaje",    label:"Lenguaje",    ic:"💬"},
-    {id:"canal",       label:"Canal",       ic:"📮"},
-    {id:"ritmo",       label:"Ritmo",       ic:"⏳"},
-    {id:"ejemplos",    label:"Ejemplos",    ic:"🎯"},
-    {id:"explicacion", label:"Explicación", ic:"🧭"}
+    {id:"lenguaje",    label:"Lenguaje",    ic:"\u{1F4AC}"},
+    {id:"canal",       label:"Canal",       ic:"\u{1F4EE}"},
+    {id:"ritmo",       label:"Ritmo",       ic:"\u{23F3}"},
+    {id:"ejemplos",    label:"Ejemplos",    ic:"\u{1F3AF}"},
+    {id:"explicacion", label:"Explicación", ic:"\u{1F9ED}"}
   ];
 
   var PROFILES = {
     p1:{
-      cls:"p1", ic:"🕊️",
+      cls:"p1", ic:"\u{1F54A}", short:"Hermana mayor, poco acceso digital",
       need:"Lleva décadas en la casa y tiene poco acceso digital. Necesita <b>presencia, calma y palabras sencillas</b> —y saber qué será de ella—.",
       message:"Hermana, quería decírselo yo misma y en persona, antes que a nadie. Después de mucho rezarlo y pensarlo, el año que viene el colegio tendrá que cerrar: somos cada vez menos y ya no podemos sostenerlo como se merece.\n\nSé todo lo que este lugar significa para usted, después de tantos años entregados aquí. No la vamos a dejar sola: buscaremos juntas el mejor sitio para usted, con calma. Ahora no hace falta decidir nada; solo quería que lo supiera de mi boca. ¿Cómo se queda?",
       channel:"En persona, a solas y sin prisa",
+      clue:"El trato de usted, la referencia a «tantos años» y el «se lo digo en persona» delatan a quién va dirigido.",
       dims:{
         lenguaje:{what:"Se quita toda la jerga («cese de actividad», «reubicación») y se dice en palabras sencillas y cálidas: «el colegio tendrá que cerrar».", why:"El lenguaje administrativo distancia y confunde; la cercanía sostiene."},
         canal:{what:"En persona y a solas, no por correo ni chat.", why:"Su acceso digital es escaso, y una noticia así no se da por una pantalla: la presencia acompaña el golpe."},
@@ -269,10 +361,11 @@ Un saludo.</p>
       }
     },
     p2:{
-      cls:"p2", ic:"🌱",
+      cls:"p2", ic:"\u{1F331}", short:"Hermana joven de otra cultura",
       need:"Llegó hace poco de otro país; el español no es su lengua materna. Necesita <b>claridad literal, contexto que no da por supuesto y comprobar que ha entendido</b> —y saber que un cambio no es un castigo—.",
       message:"Quiero contarte algo importante y explicártelo con calma. El año que viene, el colegio va a cerrar. No es por nada que hayamos hecho mal: es porque cada vez somos menos hermanas y no podemos seguir llevándolo.\n\nEsto significa que iremos a otras comunidades. A ti te vamos a acompañar para encontrar un buen destino, y tu formación sigue igual. En la vida de la congregación esto pasa a veces; es un cambio, no un castigo.\n\nTe lo dejo también por escrito, para que lo puedas leer con tranquilidad. ¿Qué dudas tienes? ¿Quieres que te lo explique otra vez?",
       channel:"Cara a cara y, después, por escrito para releer",
+      clue:"«No es un castigo», «tu formación sigue igual» y el ofrecerse a repetirlo señalan a quien necesita contexto y confirmación.",
       dims:{
         lenguaje:{what:"Frases cortas y literales, sin modismos ni ironía; «te vamos a acompañar para encontrar un buen destino» en vez de «reubicación».", why:"Si el español no es su lengua, las frases hechas se pierden o se malinterpretan."},
         canal:{what:"Cara a cara y, además, por escrito.", why:"Poder releer —y traducir— en su tiempo le da seguridad."},
@@ -282,10 +375,11 @@ Un saludo.</p>
       }
     },
     p3:{
-      cls:"p3", ic:"🌍",
+      cls:"p3", ic:"\u{1F30D}", short:"Comunidad internacional, varias lenguas",
       need:"Conviven varias lenguas y grados de comprensión. Necesita un mensaje que funcione igual en todas: <b>simple, escrito, traducible y con espacio para preguntar</b>.",
       message:"Queridas hermanas, quiero compartir con todas una noticia importante, y la he preparado por escrito para que cada una pueda leerla y, si lo necesita, traducirla.\n\nEl próximo curso, nuestro colegio va a cerrar. La razón es que somos cada vez menos y no podemos sostenerlo bien. Esto nos afecta a todas: iremos a otras comunidades, y lo haremos con cuidado y acompañamiento, sin prisa.\n\nHoy solo quiero que lo sepamos juntas. No hay que decidir nada ahora: tendremos tiempo para hablarlo, y quiero escuchar a cada una. Si algo no se entiende, por favor, preguntad —en vuestra lengua si es más fácil—.",
       channel:"Reunión de comunidad, con el texto escrito y traducido",
+      clue:"El plural «queridas hermanas», el «para que cada una pueda traducirla» y el «preguntad en vuestra lengua» lo dejan claro.",
       dims:{
         lenguaje:{what:"Lenguaje neutro, simple y traducible, sin expresiones locales.", why:"Tiene que funcionar igual de bien en varias lenguas."},
         canal:{what:"Reunión en persona más el texto escrito y traducido a las lenguas presentes.", why:"La palabra hablada sola deja fuera a quien no domina el idioma; el texto iguala el acceso."},
@@ -294,6 +388,13 @@ Un saludo.</p>
         explicacion:{what:"El porqué compartido para todas, con invitación explícita a preguntar en la propia lengua.", why:"Asegura que la misma información llega a todas por igual."}
       }
     }
+  };
+
+  // Versiones modelo para la práctica (situación nueva)
+  var PRACTICE = {
+    p1:"Hermana, venía a contárselo yo antes de que se entere por otra. La Hna. [nombre] se marcha dentro de dos semanas a otra comunidad. A mí también me ha sorprendido.\n\nSé que ustedes dos han compartido muchos años y que esto le va a doler. No se va del todo de nuestra vida: podrán seguir en contacto, y prepararemos una despedida como se merece. ¿Quiere que nos sentemos un rato y me cuenta cómo lo lleva?",
+    p2:"Quiero contarte una noticia antes de que se hable en la comunidad. La Hna. [nombre] se va en dos semanas a otra comunidad. Ha sido una decisión rápida, y a todas nos ha sorprendido.\n\nEsto no significa que haya pasado nada malo, ni que ella haya hecho algo mal. En la congregación, a veces los destinos cambian así por necesidades de otras casas. Ella sigue siendo hermana nuestra y podréis seguir en contacto.\n\nHaremos una despedida antes de que se vaya. Si tienes dudas o algo no se entiende, pregúntame las veces que necesites.",
+    p3:"Queridas hermanas, os escribo esto también en papel para que cada una pueda leerlo con calma y traducirlo si lo necesita.\n\nLa Hna. [nombre] se marchará dentro de dos semanas a otra comunidad. Ha sido una decisión reciente y sé que a muchas nos coge por sorpresa.\n\nAntes de que se vaya prepararemos un momento para despedirla juntas y darle gracias. Si alguna quiere decir algo ese día, en su propia lengua, será muy bienvenido.\n\nSi algo de esto no se entiende, preguntad sin miedo."
   };
 
   var MATRIX = {
@@ -305,27 +406,82 @@ Un saludo.</p>
   };
 
   var CHECKLIST = [
-    {ic:"💬", b:"Lenguaje:", t:"¿He quitado la jerga y las frases hechas? ¿Se entiende sin esfuerzo?"},
-    {ic:"📮", b:"Canal:", t:"¿Es el canal que esta persona puede y debe recibir? ¿La noticia merece presencia?"},
-    {ic:"⏳", b:"Ritmo:", t:"¿Doy tiempo a asimilar antes de pasar a la logística?"},
-    {ic:"🎯", b:"Ejemplos:", t:"¿Aterrizo lo abstracto en lo que significa para ella, en concreto?"},
-    {ic:"🧭", b:"Explicación:", t:"¿Doy el porqué? ¿Compruebo que se ha entendido?"}
+    {ic:"\u{1F4AC}", b:"Lenguaje:", t:"¿He quitado la jerga y las frases hechas? ¿Se entiende sin esfuerzo?"},
+    {ic:"\u{1F4EE}", b:"Canal:", t:"¿Es el canal que esta persona puede y debe recibir? ¿La noticia merece presencia?"},
+    {ic:"\u{23F3}", b:"Ritmo:", t:"¿Doy tiempo a asimilar antes de pasar a la logística?"},
+    {ic:"\u{1F3AF}", b:"Ejemplos:", t:"¿Aterrizo lo abstracto en lo que significa para ella, en concreto?"},
+    {ic:"\u{1F9ED}", b:"Explicación:", t:"¿Doy el porqué? ¿Compruebo que se ha entendido?"}
   ];
 
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  /* ---------- 2. QUIZ ANÓNIMO ---------- */
+  var ANON_ORDER = ["p3","p1","p2"];   // A, B, C
+  var LETTERS = ["A","B","C"];
+  var picks = {};
+
+  var anonHost = document.getElementById('anonHost');
+  ANON_ORDER.forEach(function(pid, i){
+    var P = PROFILES[pid];
+    var card = document.createElement('div');
+    card.className = "anon";
+    card.dataset.pid = pid;
+    var opts = "";
+    ["p1","p2","p3"].forEach(function(op){
+      opts += '<button class="pick" data-op="'+op+'">'+PROFILES[op].short+'</button>';
+    });
+    card.innerHTML = '<p class="letter">Versión '+LETTERS[i]+'</p>'+
+      '<p class="qt">'+esc(P.message)+'</p>'+
+      '<div class="picks">'+opts+'</div>'+
+      '<div class="fb"></div>';
+    anonHost.appendChild(card);
+
+    var picksEl = card.querySelector('.picks');
+    picksEl.querySelectorAll('.pick').forEach(function(b){
+      b.addEventListener('click', function(){
+        if(picksEl.classList.contains('locked')) return;
+        picksEl.querySelectorAll('.pick').forEach(function(x){ x.classList.remove('sel'); });
+        b.classList.add('sel');
+        picks[pid] = b.getAttribute('data-op');
+      });
+    });
+  });
+
+  document.getElementById('checkBtn').addEventListener('click', function(){
+    anonHost.querySelectorAll('.anon').forEach(function(card){
+      var pid = card.dataset.pid;
+      var P = PROFILES[pid];
+      var chosen = picks[pid];
+      var picksEl = card.querySelector('.picks');
+      picksEl.classList.add('locked');
+      var ok = chosen === pid;
+      card.classList.add(ok ? 'right' : 'wrong');
+      var fb = card.querySelector('.fb');
+      fb.innerHTML = '<span class="tag '+(ok?'ok':'no')+'">'+(chosen ? (ok?'Acertaste':'No era esta') : 'Sin responder')+'</span>'+
+        '<p>Era para: <b>'+P.short+'</b>. Canal: '+P.channel.toLowerCase()+'.</p>'+
+        '<p class="clue">'+P.clue+'</p>';
+      fb.classList.add('show');
+    });
+    this.textContent = "Respuestas comprobadas";
+    this.disabled = true;
+    this.style.opacity = ".6";
+  });
+
+  /* ---------- 3. PANELES ---------- */
   var panelHost = document.getElementById('panelHost');
 
   function renderPanel(pid){
     var P = PROFILES[pid];
     var html = '<div class="panel '+P.cls+'">';
     html += '<div class="need"><span class="ic">'+P.ic+'</span><span class="txt">'+P.need+'</span></div>';
-    html += '<div class="adapted"><p class="qt">'+escapeHtml(P.message)+'</p>'+
-            '<span class="channel">📍 '+P.channel+'</span></div>';
+    html += '<div class="adapted"><p class="qt">'+esc(P.message)+'</p>'+
+            '<span class="channel">\u{1F4CD} '+P.channel+'</span></div>';
     html += '<div class="whatchanged"><p class="wc-title">¿Qué cambió?</p>'+
             '<p class="wc-hint">Adivina antes de abrir cada una.</p>';
     DIMS.forEach(function(d){
       var cell = P.dims[d.id];
       html += '<div class="dim" data-d="'+d.id+'">'+
-                '<button class="dim-btn"><span class="ic">'+d.ic+'</span>'+d.label+'<span class="chev">▼</span></button>'+
+                '<button class="dim-btn"><span class="ic">'+d.ic+'</span>'+d.label+'<span class="chev">\u25BC</span></button>'+
                 '<div class="dim-body"><p class="what">'+cell.what+'</p>'+
                 '<p class="why"><b>Por qué:</b> '+cell.why+'</p></div>'+
               '</div>';
@@ -334,12 +490,9 @@ Un saludo.</p>
     html += '</div></div>';
     panelHost.innerHTML = html;
 
-    // listeners
     var dims = panelHost.querySelectorAll('.dim');
     dims.forEach(function(dim){
-      dim.querySelector('.dim-btn').addEventListener('click', function(){
-        dim.classList.toggle('open');
-      });
+      dim.querySelector('.dim-btn').addEventListener('click', function(){ dim.classList.toggle('open'); });
     });
     var ra = panelHost.querySelector('.reveal-all');
     ra.addEventListener('click', function(){
@@ -349,10 +502,7 @@ Un saludo.</p>
     });
   }
 
-  function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-  // tabs
-  var tabs = document.querySelectorAll('.tab');
+  var tabs = document.querySelectorAll('#tabs .tab');
   tabs.forEach(function(t){
     t.addEventListener('click', function(){
       tabs.forEach(function(x){ x.classList.remove('active'); });
@@ -361,13 +511,12 @@ Un saludo.</p>
     });
   });
 
-  // matrix
+  /* ---------- 4. MATRIZ Y CHECKLIST ---------- */
   var matrixBody = document.getElementById('matrixBody');
   DIMS.forEach(function(d){
     var row = document.createElement('tr');
     var cells = MATRIX[d.id];
-    row.innerHTML = '<th>'+d.ic+' '+d.label+'</th>'+
-      '<td>'+cells[0]+'</td><td>'+cells[1]+'</td><td>'+cells[2]+'</td>';
+    row.innerHTML = '<th>'+d.ic+' '+d.label+'</th><td>'+cells[0]+'</td><td>'+cells[1]+'</td><td>'+cells[2]+'</td>';
     matrixBody.appendChild(row);
   });
   var matrixBtn = document.getElementById('matrixBtn');
@@ -378,12 +527,33 @@ Un saludo.</p>
     matrixBtn.textContent = open ? 'Mostrar la tabla comparativa' : 'Ocultar la tabla comparativa';
   });
 
-  // checklist
   var cl = document.getElementById('checklist');
   CHECKLIST.forEach(function(item){
     var li = document.createElement('li');
     li.innerHTML = '<span class="ic">'+item.ic+'</span><span><b>'+item.b+'</b> '+item.t+'</span>';
     cl.appendChild(li);
+  });
+
+  /* ---------- 5. PRÁCTICA ---------- */
+  var practiceProfile = "p1";
+  var pTabs = document.querySelectorAll('#pTabs .tab');
+  pTabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      pTabs.forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      practiceProfile = t.getAttribute('data-p');
+      document.getElementById('model').classList.remove('show');
+      document.getElementById('modelBtn').textContent = "Ver una versión modelo";
+    });
+  });
+
+  document.getElementById('modelBtn').addEventListener('click', function(){
+    var m = document.getElementById('model');
+    document.getElementById('modelText').textContent = PRACTICE[practiceProfile];
+    document.getElementById('modelFor').textContent = "· " + PROFILES[practiceProfile].short.toLowerCase();
+    m.classList.add('show');
+    this.textContent = "Versión modelo mostrada";
+    m.scrollIntoView({behavior:'smooth', block:'nearest'});
   });
 
   renderPanel('p1');
